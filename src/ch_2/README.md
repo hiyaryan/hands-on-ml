@@ -142,3 +142,41 @@ Data is typically available in relational databases or spread over multiple tabl
 The data for the Housing Corporation Project is stored in a single csv file. This process is automated by making a request from the [Hands-On ML GitHub Repository](https://github.com/ageron/handson-ml2/tree/master/datasets/housing) as a compressed `.tgz` file and extracts it into the project directory (see: `fetch_housing_data` in [notebook](https://github.com/hiyaryan/hands-on-ml/blob/main/src/ch_2/Housing.ipynb)).
 
 Load the data into a pandas `DataFrame` (see: `load_housing_data` in [notebook](https://github.com/hiyaryan/hands-on-ml/blob/main/src/ch_2/Housing.ipynb)).
+
+#### 2C Look at the Data Structure
+`head()` 
+
+Allows you to look at the top 5 rows of the DataFrame. Each column is an attribute. There are a total of 10 attributes in the housing dataset:
+
+`longitude`, `latitude`, `housing_median_age`, `total_rooms`, `total_bedrooms`, `population`, `households`, `median_income`, `median_house_value`, `ocean_proximity`
+
+`info()` 
+
+Gives you a description of the data such as the total number of rows, the attributes type, and number of non-null values. 
+- There are 20,640 instances. 207 of the instances are missing the `total_bed_rooms` feature.
+- All attributes are numerical except the `ocean_proximity` field of type `object` which must be a text attribute since the data came from a CSV file.
+  - From the `head` these rows are repetitive indicating they are likely categorical.
+  - `value_counts()` shows how many categories exist and how many districts belong to each category.
+
+`describe()`
+
+Allows you to view a summary of the *numerical* attributes.
+
+The summary contains the count, mean, std, min, max, and percentiles of each field.
+- std (Standard Deviation) measures how dispersed the values are.
+- 25%, 50%, 75% percentiles indicate the value under which a given percentage of the instances in a group of observations fall
+
+Note: The standard deviation is denoted by $\sigma$ and is the square root of the variance which is the average of the square deviation from the mean. When a feature has a bell-shaped normal distribution (or Gaussian distribution) the "68-95-99.7" rule applies: 68% of the values fall within $1\sigma$ of the mean, 95% fall within $2\sigma$, and 99.7% within $3\sigma$.
+
+`hist(...)`
+
+Allows you to plot a histogram that can show how many instances along the vertical axis have a given value along the horizontal axis.
+
+Housing data histogram analysis:
+
+1.  `median_income` has been preprocessed. It is scaled and capped at 15.0001 for higher median incomes and at 0.4999 for lower median incomes where each number represents roughly tens of thousands of dollars.
+2.  `housing_median_age` and `median_house_value` are also capped. Since `median_house_value` is the target attribute, the ML algorithm may learn that prices never go beyond that limit. If precise predictions are required then proper labels for the districts whose labels were capped should be collected, or remove the districts that are capped from the training set.
+3.  The attributes are scaled differently. This means the ML algorithm will likely not perform well without applying a *feature scaling* transformation.
+4.  Many of the histograms are *tail-heavy*, meaning they extend farther to the right of the median than to the left potentially making it harder for some ML algorithms to detect patterns. These attributes can possibly be transformed to have more *bell-shaped* distributions.
+
+Note: If importing `matplotlib.pyplot` in a Jupyter Notebook, the magic command, `%matplotlib inline`, may be required in order to render the plot inline in the notebook using Jupyter Notebook's own graphical backend, otherwise, a user-specified graphical backend must be selected.
