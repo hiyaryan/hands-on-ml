@@ -26,13 +26,13 @@
 
 ### Machine Learning Housing Corporation Project
 #### **1. Frame the problem and look at the big picture.**
-#### Look at the Big Picture
+#### 1A Look at the Big Picture
 Build a model of California housing prices that can predict the median housing price in any district (block group) given the following metrics,
 - Population
 - Median income
 - Median housing price
 
-#### Frame the Problem
+#### 1B Frame the Problem
 The model output is to be fed into another machine learning system with other signals whose output will be used to determine whether it is worth investing in a given area which directly affects company revenue.
 ##### def. signal - a piece of information fed to a Machine Learning system
 
@@ -53,3 +53,45 @@ Components of a pipeline run asynchronously. Each pulls data, processes it, and 
 1. Since the data is labeled (this is the training examples), such that each instance comes with expected output, it should use a supervised task.
 2. Since a value will be predicted from the model, it should use a regression task, more specifically, since it is dealing with multiple features it will be a multiple regression task. It is also a univariate regression problem since only a single value will be made for a prediction (as opposed to a multivariate regression problem). 
 3. Since there is no continuous flow of data, there is no need to adjust to changing data rapidly, and the data is small enough to fit in memory, so batch learning should be implemented (large amounts of data can be split across servers using MapReduce technique or online learning).
+
+
+#### 1C Select a Performance Measure
+Typical performance measures for regression problems is the *Root Mean Square Error* (RMSE) that gives an idea of how much error the system makes in its predictions with a higher weight for large errors.
+
+$$
+\begin{align}
+    RMSE(\bf{X},\it{h}) = \sqrt{\frac{1}{\it{m}}\sum_{i=1}^{\it{m}}(\it{h}(\bf{x}^{i}) - \it{y}^{i})^{2}}
+\end{align}
+$$
+
+Notation
+- $\it{m}$: the number of instances in the dataset the RMSE will be measuring
+- $\bf{x}^{i}$: a vector of all feature values of the $i^{th}$ instance in the dataset
+- $\it{y}^{i}$: the label or desired output for the instance containing $\bf{x}^{i}$
+- $\bf{X}$: a matrix containing all feature values (or all instances in the dataset) where each row is an instance, and the $i^{th}$ row is equal to the transpose of $\bf{x}^{i} = (\bf{x}^{i})^{T}$
+- $\it{h}$: the hypothesis (or system's prediction function) that outputs a predicted value $\hat{\it{y}} = \it{h}(\bf{x}^{i})$ given an instance's feature vector $\bf{x}^{i}$
+- $RMSE(\bf{X},\it{h})$: the cost function measured on the set of examples using $\it{h}$
+
+Note: $\it{italic}$ font is used for scalar values and function names, $\bf{bold}$ font is used for vectors and matrices
+
+Another performance measure that could be used if there are many outliers is the *Mean Absolute Error* (MAE).
+
+$$
+\begin{align}
+    MAE(\bf{X},\it{h}) = \frac{1}{m}\sum_{i=1}^{\it{m}}|h(\bf{x}^i - \it{y}^i)|
+\end{align}
+$$
+
+Both RMSE and MAE measure the distance between the prediction vector and the target value vector. The following are possible variations of distance measures (or norms),
+
+- *Euclidean Norm* is the distance corresponding to the RMSE called the $l_1$ *norm*, denoted by $||\cdot||_2$ (or simply $||\cdot||$).
+- *Manhattan Norm* is the distance between two points such that the lines between points can only be orthogonal corresponding to the sum of absolutes (MAE), denoted by $||\cdot||_1$.
+- $l_k$ *norm*, is the distance of a vector $\bf{v}$ containing $\it{n}$ elements, defined as $||\bf{v}||_k = (|\it{v}_0|^k + |\it{v}_1|^k + ... + |\it{v}_n|^k)^{\frac{1}{k}}$, where $l_0$ gives the number of nonzero elements in the vector and $l_\infty$ gives the maximum absolute value in the vector.
+- The higher the norm index value, *k*, the more focused the measure is on large values neglecting smaller ones, making RMSE more sensitive to outliers than MAE; but RMSE is preferred when outliers are exponentially rare (bell-shaped curve) which improves its performance.
+
+#### 1D Check the Assumptions
+Verify assumption to catch serious issues early on.
+
+It is assumed that prices will be fed into the downstream Machine Learning system and used in this numeric form. However, if the prices are converted into categories (e.g. "cheap", "medium", "expensive") then getting prices perfectly is not important. This would change the problem framing from a regression task to a classification task.
+
+In the Housing Corporation Project, assume actual prices are needed.
