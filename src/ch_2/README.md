@@ -95,3 +95,50 @@ Verify assumption to catch serious issues early on.
 It is assumed that prices will be fed into the downstream Machine Learning system and used in this numeric form. However, if the prices are converted into categories (e.g. "cheap", "medium", "expensive") then getting prices perfectly is not important. This would change the problem framing from a regression task to a classification task.
 
 In the Housing Corporation Project, assume actual prices are needed.
+
+#### **2. Get the Data**
+- [Full Hands-On ML Jupyter Notebook](https://github.com/ageron/handson-ml2)
+- [Housing Corporation Project Data](https://github.com/ageron/handson-ml2/tree/master/datasets/housing)
+
+#### 2A Create the Workspace
+1. [Install Python](https://www.python.org/)
+2.  Create a workspace directory for the ML code and datasets
+    ```console
+    $ export ML_PATH="$HOME/hands-on-ml"
+    $ mkdir -p $ML_PATH
+    ```
+3. Create a virtual environment and activate
+    ```console
+    $ python3 -m venv .
+    $ source .venv/bin/activate
+    ```
+4. Create requirements.txt for Jupyter, Matplotlib, NumPy, pandas, SciPy, and Scikit-Learn
+    ```txt
+    jupyter>=1.0.0
+    matplotlib>=3.7.1
+    numpy>=1.24.2
+    pandas>=1.5.3
+    scipy>=1.10.1
+    scikit-learn>=1.2.2
+    ```
+5. Install modules
+    ```console
+    $ pip3 install -r requirements.txt
+    ```
+6. Register venv to Jupyter
+    ```console
+    $ python3 -m ipykernel install --user --name=python3
+    ```
+7. Open Jupyter Notebook
+    ```console
+    $ jupyter notebook
+    ```
+8. Access notebook at http://localhost:8888/
+9. Create a new Python notebook.
+
+#### 2B Download and Load the Data
+Data is typically available in relational databases or spread over multiple tables, documents, or files which require credentials and access authorizations.
+
+The data for the Housing Corporation Project is stored in a single csv file. This process is automated by making a request from the [Hands-On ML GitHub Repository](https://github.com/ageron/handson-ml2/tree/master/datasets/housing) as a compressed `.tgz` file and extracts it into the project directory (see: `fetch_housing_data` in [notebook](https://github.com/hiyaryan/hands-on-ml/blob/main/src/ch_2/Housing.ipynb)).
+
+Load the data into a pandas `DataFrame` (see: `load_housing_data` in [notebook](https://github.com/hiyaryan/hands-on-ml/blob/main/src/ch_2/Housing.ipynb)).
