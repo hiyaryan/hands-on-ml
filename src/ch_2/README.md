@@ -3,9 +3,9 @@
 
 
 ### General Steps to Build a Machine Learning Project
-1. Frame the problem and look at the big picture.
-2. Get the data.
-3. Discover and visualize the data to gain insights.
+1. [Frame the problem and look at the big picture.](#1-frame-the-problem-and-look-at-the-big-picture)
+2. [Get the data.](#2-get-the-data)
+3. [Discover and visualize the data to gain insights.](#3-discover-and-visualize-the-data-to-gain-insights)
 4. Prepare the data to better expose the underlying data patterns to Machine Learning algorithms.
 5. Explore many different models and shortlist the best ones.
 6. Fine-tune your models and combine them into a great solution.
@@ -26,6 +26,12 @@
 
 ### Machine Learning Housing Corporation Project
 #### **1. Frame the problem and look at the big picture.**
+Contents
+- [1A Look at the Big Picture](#1a-look-at-the-big-picture)
+- [1B Frame the Problem](#1b-frame-the-problem)
+- [1C Select a Performance Measure](#1c-select-a-performance-measure)
+- [1D Check the Assumptions](#1d-check-the-assumptions)
+
 #### 1A Look at the Big Picture
 Build a model of California housing prices that can predict the median housing price in any district (block group) given the following metrics,
 - Population
@@ -97,6 +103,13 @@ It is assumed that prices will be fed into the downstream Machine Learning syste
 In the Housing Corporation Project, assume actual prices are needed.
 
 #### **2. Get the Data**
+Contents
+- [2A Create the Workspace](#2a-create-the-workspace)
+- [2B Download and Load the Data](#2b-download-and-load-the-data)
+- [2C Look at the Data Structure](#2c-look-at-the-data-structure)
+- [2D Create a Test Set](#2d-create-a-test-set)
+
+Data Repositories
 - [Full Hands-On ML Jupyter Notebook](https://github.com/ageron/handson-ml2)
 - [Housing Corporation Project Data](https://github.com/ageron/handson-ml2/tree/master/datasets/housing)
 
@@ -236,3 +249,5 @@ train_set, test_set = train_test_split(housing, test_size=0.2, random_state=42)
 A *sampling bias* can occur if the dataset is not large enough and the test set is selected through random sampling methods. This is because if the right number of instances are not sampled from each stratum (def. strata - a homogenous subgroup of a population), then the test set may not be representative of the overall population. *Stratified sampling* can be used to ensure representative samples are selected.
 
 In the housing dataset, `median_income` is found to be an important attribute to to predict `median_house_value` so the test set should be representative of a stratum of `median_income`. This requires stratified sampling which can be performed through analyzing the `median_income` histogram and determine how many of each instance from each bucket should be included in the test set. The size of the bucket determines the size of each strata in the test set.
+
+#### **3. Discover and visualize the data to gain insights.**
