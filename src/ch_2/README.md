@@ -251,3 +251,38 @@ A *sampling bias* can occur if the dataset is not large enough and the test set 
 In the housing dataset, `median_income` is found to be an important attribute to to predict `median_house_value` so the test set should be representative of a stratum of `median_income`. This requires stratified sampling which can be performed through analyzing the `median_income` histogram and determine how many of each instance from each bucket should be included in the test set. The size of the bucket determines the size of each strata in the test set.
 
 #### **3. Discover and visualize the data to gain insights.**
+Contents
+- [3A Visualizing Geographical Data](#3a-visualizing-geographical-data)
+- [3B Looking for Correlations](#3b-looking-for-correlations)
+
+Put the *test set* aside and explore the *training set*. If the training set is large another *exploration set* be sampled.
+
+#### 3A Visualizing Geographical Data
+Geographical data can be visualized with scatterplots. 
+
+```
+housing.plot(kind="scatter", x="longitude", y="latitude", alpha=0.1)
+```
+
+`alpha` setting alpha makes it easier to visualize high density points on the plot.
+
+Scatter Plot Options
+- `s` radius of a circle 
+- `c` color gradient 
+- `cmap` color map (blue are low values, red are high values)
+
+```
+housing.plot(kind="scatter", x="longitude", y="latitude", alpha=0.4, s=housing["population"]/100, label="population", figsize=(10, 7), c="median_house_value", cmap=plt.get_cmap("jet"), colorbar=True)
+```
+
+This housing scatter plot shows that the prices are related to the location and population density.
+
+A clustering algorithm can be useful to detect the main cluster and for adding new features that measure the proximity to the cluster centers.
+
+#### 3B Looking for Correlations
+Since the dataset is not large, the *standard correlation coefficient*, or *Pearson's r*, can be computed using the `corr()` function on the DataFrame.
+
+Correlation coefficients range from [-1, 1], where 1 is a strong positive correlation, 0 is no correlation, and -1 is a strong negative correlation. 
+
+Pandas also has a `scatter_matrix` function that plots every numerical attribute against every other numerical attribute. This can be useful to spot patterns and to detect attributes that have a strong correlation.
+
