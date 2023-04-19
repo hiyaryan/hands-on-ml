@@ -180,3 +180,59 @@ Housing data histogram analysis:
 4.  Many of the histograms are *tail-heavy*, meaning they extend farther to the right of the median than to the left potentially making it harder for some ML algorithms to detect patterns. These attributes can possibly be transformed to have more *bell-shaped* distributions.
 
 Note: If importing `matplotlib.pyplot` in a Jupyter Notebook, the magic command, `%matplotlib inline`, may be required in order to render the plot inline in the notebook using Jupyter Notebook's own graphical backend, otherwise, a user-specified graphical backend must be selected.
+
+#### 2D Create a Test Set
+To prevent the *data snooping bias*, which can introduce an overly optimistic estimate of the generalization error, it is best practice to set aside part of the data before deciding on a Machine Learning model. This bias occurs when the brain selects a Machine Learning model after having stumbled upon some interesting pattern in the data. The issue is that the brain's pattern detection system is prone to overfitting, which can hurt the performance of the system.
+
+A test set should be a random selection of instances set aside that has a size of about 20%, or smaller depending on the length, of the dataset.
+
+```py
+def split_train_test(data, test_ratio):
+    '''
+    Splits the dataset into a test set and train set.
+    '''
+    shuffled_indices = np.random.permutation(len(data))
+    test_set_size = int(len(data) * test_ratio)
+    test_indices = shuffled_indices[:test_set_size]
+    train_indices = shuffled_indices[test_set_size:]
+    return data.iloc[train_indices], data.iloc[test_indices]
+```
+
+The test set should always contain the same instances, otherwise, a new test set will be generated every time it runs and the entire dataset will be seen eventually. The `split_train_test` function assumes it will run only once and that the dataset will not be updated. To solve for this, the test set can be saved separately from the dataset and loaded into every subsequent run or, the random number generator's seed can be set so that the same shuffled indices are always selected. 
+
+In addition to the test set containing the same instances, the dataset should be able to be updated with new fetched data. This can be done by computing a hash of each instance's identifier and put the instance in the test set if the hash is lower than 20% of the maximum hash value ensuring consistency across multiple runs even if the dataset is refreshed. This means the new test set will contain 20% of the new instances and none of the instances in the previous test set.
+
+```py
+def test_set_check(identifier, test_ratio):
+    '''
+
+    '''
+    return crc32(np.int64(identifier)) & 0xffffffff < test_ratio * 2**32
+
+
+def split_train_test_by_id(data, test_ratio, id_column):
+    '''
+    '''
+    ids = data[id_column]
+    in_test_set = ids.apply(lambda id_: test_set_check(id_, test_ratio))
+    return data.loc(~in_test_set), data.loc[in_test_set]
+```
+
+These functions require an identifier. Since the housing data does not have one, the row index can be used as long as new data is only appended to the end, otherwise, more stable features can be combined to create an ID e.g. `longitude` and `latitude`.
+
+```py
+housing_with_id = housing.reset_index()
+housing_with_id["id"] = housing["longitude"] * 1000 + housing["latitude"]
+train_set, test_set = split_train_test_by_id(housing_with_id, 0.2, "id")
+```
+
+Scikit-Learn also provides some functions to split datasets into subsets. A similar simple function to `split_train_test` is `train_test_split` that can take a `random_state` parameter that allows a random generator seed which can ensure only the same test set is extracted from the dataset.
+
+```py
+# use of Scikit-Learn to split the dataset into a train and test set
+train_set, test_set = train_test_split(housing, test_size=0.2, random_state=42)
+```
+
+A *sampling bias* can occur if the dataset is not large enough and the test set is selected through random sampling methods. This is because if the right number of instances are not sampled from each stratum (def. strata - a homogenous subgroup of a population), then the test set may not be representative of the overall population. *Stratified sampling* can be used to ensure representative samples are selected.
+
+In the housing dataset, `median_income` is found to be an important attribute to to predict `median_house_value` so the test set should be representative of a stratum of `median_income`. This requires stratified sampling which can be performed through analyzing the `median_income` histogram and determine how many of each instance from each bucket should be included in the test set. The size of the bucket determines the size of each strata in the test set.
