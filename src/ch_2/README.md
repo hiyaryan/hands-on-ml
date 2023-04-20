@@ -6,7 +6,7 @@
 1. [Frame the problem and look at the big picture.](#1-frame-the-problem-and-look-at-the-big-picture)
 2. [Get the data.](#2-get-the-data)
 3. [Discover and visualize the data to gain insights.](#3-discover-and-visualize-the-data-to-gain-insights)
-4. Prepare the data to better expose the underlying data patterns to Machine Learning algorithms.
+4. [Prepare the data to better expose the underlying data patterns to Machine Learning algorithms.](#4-prepare-the-data-to-better-expose-the-underlying-data-patterns-to-machine-learning-algorithms)
 5. Explore many different models and shortlist the best ones.
 6. Fine-tune your models and combine them into a great solution.
 7. Present your solution.
@@ -254,6 +254,7 @@ In the housing dataset, `median_income` is found to be an important attribute to
 Contents
 - [3A Visualizing Geographical Data](#3a-visualizing-geographical-data)
 - [3B Looking for Correlations](#3b-looking-for-correlations)
+- [3C Experimenting with Attribute Combinations](#3c-experimenting-with-attribute-combinations)
 
 Put the *test set* aside and explore the *training set*. If the training set is large another *exploration set* be sampled.
 
@@ -286,3 +287,58 @@ Correlation coefficients range from [-1, 1], where 1 is a strong positive correl
 
 Pandas also has a `scatter_matrix` function that plots every numerical attribute against every other numerical attribute. This can be useful to spot patterns and to detect attributes that have a strong correlation.
 
+#### 3C Experimenting with Attribute Combinations
+Before preparing data for Machine Learning algorithms, it is useful to try out various attribute combinations to see if they can improve the accuracy of the model. 
+
+Some combinations worth experimenting in the housing dataset with are rooms per household, bedrooms per rooms, and population per household.
+
+By adding these combinations to the dataset, the correlation matrix can be computed again to see if the new attributes have a higher correlation with the `median_house_value`. 
+
+Through experimentation, it was found that the `rooms_per_household` attribute is more correlated with the `median_house_value` than the `total_rooms` attribute.
+
+This step is iterative and can be returned to after the model is trained to see if the model performs better with the new attributes that may be discovered with more experimentation.
+
+#### **4. Prepare the data to better expose the underlying data patterns to Machine Learning algorithms.**
+Contents
+- [4A Data Cleaning](#4a-data-cleaning)
+- [4B Handling Text and Categorical Attributes](#4b-handling-text-and-categorical-attributes)
+- [4C Custom Transformers](#4c-custom-transformers)
+- [4D Feature Scaling](#4d-feature-scaling)
+- [4E Transformation Pipelines](#4e-transformation-pipelines)
+
+Prepare the data for Machine Learning algorithms by cleaning the data. This can be done by writing functions that fill in missing values, remove outliers, and convert non-numerical values to numerical values.
+
+#### 4A Data Cleaning
+Missing features can break Machine Learning algorithms so it is important to handle them. To handle the missing values found in `total_bedrooms` there are three options:
+1. Get rid of the corresponding districts
+```py
+housing.dropna(subset=["total_bedrooms"])
+```
+2. Get rid of the whole attribute
+```py
+housing.drop("total_bedrooms", axis=1)
+```
+3. Set the values to some value (zero, the mean, the median, etc.)
+```py
+median = housing["total_bedrooms"].median()
+housing["total_bedrooms"].fillna(median, inplace=True)
+```
+
+Scikit-Learn provides a `SimpleImputer` class to handle missing values. 
+
+#### 4B Handling Text and Categorical Attributes
+Most Machine Learning algorithms prefer to work with numbers so text and categorical attributes should be converted to numbers.
+
+The `ocean_proximity` attribute is a categorical attribute with text values. This can be converted to numerical values by using the `OrdinalEncoder` class from Scikit-Learn.
+
+To prevent the algorithm from assuming that two nearby values are more similar than two distant values, a *one-hot encoding* can be used. This can be done with the `OneHotEncoder` class from Scikit-Learn.
+
+##### def. one-hot encoding - creating a new binary attribute for each category and assigning a 1 (hot) or 0 (cold) to the attribute depending on the category of the instance
+
+##### def. dummy attribute - new binary attribute created by one-hot encoding
+
+For a large number of possible categories, one-hot encoding can result in a large number of input features which can slow down training and degrade performance. Some solutions to this problem are:
+- Replacing the categorical attribute with a useful numerical attribute.
+- Replacing each category with a learnable, low-dimensional vector called an *embedding* that is learned during training (this is called *representation learning*).
+
+#### 4C Custom Transformers
