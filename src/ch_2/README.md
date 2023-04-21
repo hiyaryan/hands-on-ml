@@ -378,3 +378,37 @@ If there is a mixture of sparse and dense features, the `ColumnTransformer` esti
 Contents
 - [5A Training and Evaluating on the Training Set](#5a-training-and-evaluating-on-the-training-set)
 - [5B Better Evaluation Using Cross-Validation](#5b-better-evaluation-using-cross-validation)
+
+#### 5A Training and Evaluating on the Training Set
+First, train a Linear Regression model. This is a good model to start with because it is fast to train and it is easy to understand and will serve as a baseline for the more complex models.
+
+Use RMSE as the performance measure for the Linear Regression model. Recall this is a common performance measure for regression problems. The RMSE of a model is the square root of the mean of the squared errors.The `mean_squared_error()` function from Scikit-Learn can be used to calculate the MSE. The `np.sqrt()` function can be used to calculate the RMSE.
+
+For the housing dataset, a Linear Regression model underfits the data. This is because the features do not provide enough information to make good predictions, or the model is not powerful enough.
+
+Next, train a Decision Tree model. This is a powerful model, capable of finding complex nonlinear relationships in the data. The Decision Tree model is capable of finding patterns in the data that Linear Regression model is unable to find.
+
+The Decision Tree model is overfitting the data. This is because the model is too complex and has memorized the noise in the training data.
+
+#### 5B Better Evaluation Using Cross-Validation
+The Decision Tree model can be evaluated using the `train_test_split()` function to split the training set into a smaller training set and a validation set, then train the model against the smaller training set and evaluate it against the validation set. This process can be repeated several times using different validation sets to get an idea of how the model will perform on new data.
+
+Scikit-Learn has a K-fold cross-validation feature that can train and evaluate the Decision Tree model 10 times (by default) using different combinations of the training and validation sets. The result is an array containing the 10 evaluation scores.
+
+Cross-validation allows you to get both a measure of the model's performance and a measure of how precise this performance measure is. The standard deviation of the scores is a measure of how precise the estimate is.
+
+Compared to the Decision Tree model, the Linear Regression model performs better. This is because the Decision Tree model is overfitting the data worse than the Linear Regression model underfitting it. 
+
+Another model to try is the Random Forest model that is a type of ensemble learning. This model works by training many Decision Trees on random subsets of the features, then averaging out their predictions.
+
+##### def. Ensemble Learning - the process of combining the predictions of several models to get better predictions than with any individual model. The Random Forest model is an example of an ensemble learning method called *Random Forests*.
+
+The Random Forest model performs better than the Linear Regression model. However, it is still overfitting the training data.
+
+Another model to try is the Support Vector Machine (SVM) model. This model is particularly good at performing linear regression. The SVM model is also good at handling complex nonlinear datasets.
+
+Finally try a neural network model. This model is capable of learning complex nonlinear relationships in the data. However, it is very slow to train and it requires a lot of data to perform well.
+
+Use Python's `pickle` module to save the trained models. This is useful for when you want to come back to a project later and pick up where you left off.
+
+#### **6. Fine-Tune Your Model**
