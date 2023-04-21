@@ -7,7 +7,7 @@
 2. [Get the data.](#2-get-the-data)
 3. [Discover and visualize the data to gain insights.](#3-discover-and-visualize-the-data-to-gain-insights)
 4. [Prepare the data to better expose the underlying data patterns to Machine Learning algorithms.](#4-prepare-the-data-to-better-expose-the-underlying-data-patterns-to-machine-learning-algorithms)
-5. Explore many different models and shortlist the best ones.
+5. [Explore many different models and shortlist the best ones.](#5-explore-many-different-models-and-short-list-the-best-ones)
 6. Fine-tune your models and combine them into a great solution.
 7. Present your solution.
 8. Launch, monitor, and maintain your system.
@@ -342,3 +342,39 @@ For a large number of possible categories, one-hot encoding can result in a larg
 - Replacing each category with a learnable, low-dimensional vector called an *embedding* that is learned during training (this is called *representation learning*).
 
 #### 4C Custom Transformers
+Scikit-Learn relies on duck typing (not inheritance) so in order to use a custom transformer that works seamlessly in a Scikit-Learn pipeline a class can be created that implements three methods: `fit()`, `transform()`, and `fit_transform()`. These methods perform tasks such as custom cleanup operations or combining specific attributes.
+
+Two Scikit-Learn classes can be used to create a custom transformer: `BaseEstimator` and `TransformerMixin`. The `BaseEstimator` class gives the `get_params()` and `set_params()` methods, useful for hyperparameter tuning, and the `TransformerMixin` class adds the `fit_transform()` method.
+
+The two methods that need to be implemented are `fit()` and `transform()`. The `fit()` method is used to learn the parameters of the transformation, and the `transform()` method is used to apply the transformation to the data.
+
+A hyperparameter can be added to any data preparation step that has some uncertainty in how it should be prepared. For example, the `add_bedrooms_per_room` hyperparameter can be added to the `CombinedAttributesAdder` class to determine whether or not to add the new attribute.
+
+#### 4D Feature Scaling
+Feature scaling is the process of transforming numerical attributes so that they have the same scale. This is important for Machine Learning algorithms that do not perform well when the input numerical attributes have very different scales.
+
+For example, the `total_rooms` attribute ranges from about 6 to 39,320, while the `median_income` attribute ranges from 0 to 15. The `total_rooms` attribute has a much larger scale than the `median_income` attribute.
+
+Two common ways to get all attributes to have the same scale are *min-max scaling* and *standardization*.
+
+##### def. min-max scaling - also called normalization, this is the process of subtracting the min value and dividing by the max minus the min shifting the range of values to be between 0 and 1 (can be done with Scikit-Learn's `MinMaxScaler` class)
+
+##### def. standardization - this is the process of subtracting the mean value and dividing by the variance so that the resulting distribution has unit variance which does not bound values to a specific range making it less affected by outliers (can be done with Scikit-Learn's `StandardScaler` class)
+
+Ensure that all transformations are applied to the training set and not the full dataset. This is to prevent data leakage which can occur when the test set is used to make decisions about the data preparation process (such as deciding which transformations to apply).
+
+#### 4E Transformation Pipelines
+Data transformations must be executed in the right order. Scikit-Learn provides the `Pipeline` class to help with this. 
+
+The `Pipeline` constructor takes a list of name/estimator pairs defining a sequence of steps. All but the last estimator must be transformers (i.e. they must have a `fit_transform()` method). The names can be anything you like.
+
+`fit_transform()` is called on all transformers in the pipeline, in the order they were specified, and the result is passed to the next transformer's `fit_transform()` method until the final estimator is reached, at which point the pipeline stops and the final estimator's `fit()` method is called.
+
+`ColumnTransformer` can be used to apply different transformations to different columns. This is useful for the housing dataset because the numerical attributes need to be scaled while the categorical attributes need to be converted to one-hot vectors.
+
+If there is a mixture of sparse and dense features, the `ColumnTransformer` estimates the density of the final matrix (i.e. the ratio of nonzero cells), and it returns a sparse matrix if the density is lower than a given threshold (by default, `sparse_threshold=0.3`). 
+
+#### **5. Explore many different models and short-list the best ones.**
+Contents
+- [5A Training and Evaluating on the Training Set](#5a-training-and-evaluating-on-the-training-set)
+- [5B Better Evaluation Using Cross-Validation](#5b-better-evaluation-using-cross-validation)
