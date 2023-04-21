@@ -8,7 +8,7 @@
 3. [Discover and visualize the data to gain insights.](#3-discover-and-visualize-the-data-to-gain-insights)
 4. [Prepare the data to better expose the underlying data patterns to Machine Learning algorithms.](#4-prepare-the-data-to-better-expose-the-underlying-data-patterns-to-machine-learning-algorithms)
 5. [Explore many different models and shortlist the best ones.](#5-explore-many-different-models-and-short-list-the-best-ones)
-6. Fine-tune your models and combine them into a great solution.
+6. [Fine-tune your models and combine them into a great solution.](#6-fine-tune-your-models-and-combine-them-into-a-great-solution)
 7. Present your solution.
 8. Launch, monitor, and maintain your system.
 
@@ -411,4 +411,43 @@ Finally try a neural network model. This model is capable of learning complex no
 
 Use Python's `pickle` module to save the trained models. This is useful for when you want to come back to a project later and pick up where you left off.
 
-#### **6. Fine-Tune Your Model**
+#### **6. Fine-tune your models and combine them into a great solution.**
+Contents
+- [6A Grid Search](#6a-grid-search)
+- [6B Randomized Search](#6b-randomized-search)
+- [6C Ensemble Methods](#6c-ensemble-methods)
+- [6D Analyze the Best Models and Their Errors](#6d-analyze-the-best-models-and-their-errors)
+- [6E Evaluate Your System on the Test Set](#6e-evaluate-your-system-on-the-test-set)
+
+Hyperparameters are parameters that are not directly learnt within estimators. They can be set manually until the model performs well or they can be tuned automatically using techniques such as grid search or randomized search.
+
+#### 6A Grid Search
+SciKit-Learn's `GridSearchCV` class can be used to search for the best hyperparameter values. It is given a dictionary of hyperparameters and it tries out all the possible combinations of values, using cross-validation to evaluate each model.
+
+When the hyperparameter value is unclear try consecutive powers of 10. For example, if you are not sure whether the `n_estimators` hyperparameter should be set to 10, 100, or 1000, try setting it to 10, 100, and 1000 to see which works best.
+
+View the best hyperparameter values found by the grid search using the `best_params_` attribute and the best estimator using the `best_estimator_` attribute. View the evaluation scores for each hyperparameter combination tested during the grid search using the `cv_results_` attribute and search for the lowest RMSE score to find the best hyperparameter combination.
+
+Grid search is good for exploring relatively few combinations, but when the hyperparameter search space is large, it is often preferable to use `RandomizedSearchCV` instead.
+
+#### 6B Randomized Search
+Randomize search can be used when the hyperparameter search space is large. It evaluates a given number of random combinations by selecting a random value for each hyperparameter at every iteration. Benefits of randomized search include:
+- Exploring a larger specified hyperparameter space.
+- Giving more control over the computing budget.
+
+#### 6C Ensemble Methods
+Ensemble methods fine-tune models by combining them into an ensemble. The ensemble's predictions are often better than the best individual model's predictions.
+
+#### 6D Analyze the Best Models and Their Errors
+Insights can be gained by analyzing the best models and their errors. `RandomForestRegressor` can be used to get the relative importance of each attribute for making accurate predictions.
+
+When analyzing the best models and their errors, it's useful to drop the least useful features. Additionally, look at the specific errors the system makes and try to understand why it makes them.
+
+#### 6E Evaluate Your System on the Test Set
+To evaluate the final model on the test set, run the `test_set` through the `full_pipeline` to transform the data (call `transform()`, not `fit_transform()`), then evaluate the final model on the transformed test set.
+
+Ensure the test set is transformed using `transform()` and not `fit_transform()` to avoid data leakage which will fit the model to the test set.
+
+To get an idea of how precise the model's generalization error is, compute the 95% confidence interval for the generalization error using `scipy.stats.t.interval()`.
+
+After evaluating the final model, resist any more fine-tuning which likely won't improve the model's performance on new data. Instead, collect more data and try different models or prepare to launch, monitor, and maintain the system.
