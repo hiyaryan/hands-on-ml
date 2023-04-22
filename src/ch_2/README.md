@@ -1,7 +1,6 @@
 # Chapter 2
 ## End-to-End Machine Learning Project
 
-
 ### General Steps to Build a Machine Learning Project
 1. [Frame the problem and look at the big picture.](#1-frame-the-problem-and-look-at-the-big-picture)
 2. [Get the data.](#2-get-the-data)
@@ -9,8 +8,7 @@
 4. [Prepare the data to better expose the underlying data patterns to Machine Learning algorithms.](#4-prepare-the-data-to-better-expose-the-underlying-data-patterns-to-machine-learning-algorithms)
 5. [Explore many different models and shortlist the best ones.](#5-explore-many-different-models-and-short-list-the-best-ones)
 6. [Fine-tune your models and combine them into a great solution.](#6-fine-tune-your-models-and-combine-them-into-a-great-solution)
-7. Present your solution.
-8. Launch, monitor, and maintain your system.
+7. [Launch, monitor, and maintain your system.](#7-launch-monitor-and-maintain-your-system)
 
 ### Where to Get Real Data
 - [UC Irvine Machine Learning Repository](http://archive.ics.uci.edu/ml/)
@@ -22,7 +20,6 @@
 - [Wikipedia's List of Machine Learning datasets](https://en.wikipedia.org/wiki/List_of_datasets_for_machine-learning_research)
 - [Quora.com](https://www.quora.com/Where-can-I-find-large-datasets-open-to-the-public)
 - [The datasets subreddit](https://www.reddit.com/r/datasets)
-
 
 ### Machine Learning Housing Corporation Project
 #### **1. Frame the problem and look at the big picture.**
@@ -451,3 +448,25 @@ Ensure the test set is transformed using `transform()` and not `fit_transform()`
 To get an idea of how precise the model's generalization error is, compute the 95% confidence interval for the generalization error using `scipy.stats.t.interval()`.
 
 After evaluating the final model, resist any more fine-tuning which likely won't improve the model's performance on new data. Instead, collect more data and try different models or prepare to launch, monitor, and maintain the system.
+
+#### **7. Launch, monitor, and maintain your system.**
+To deploy the model to production, export the model using `joblib` and write production code to load the model and make predictions using the `predict()` method.
+
+The `predict()` method can be called behind a REST API. This allows any client to get predictions from the model by sending HTTP requests with the input data and getting the predictions back in the response from a server hosting the model.
+
+A simple way to deploy the model is to use a cloud service such as Google Cloud AI Platform, Amazon SageMaker, or Microsoft Azure ML. These services provide a convenient way to deploy models to production, and they can also take care of scaling, load balancing, and so on.
+
+In addition to deploying the model, the model should be monitored and maintained. Alongside possible broken components, a model's performance will gradually decline over time as the data evolves. This is called model rot. To maintain the model's performance, regularly train it on fresh data.
+
+The model's performance can be monitored either downstream through inference or through the use of human raters. 
+
+If data keeps evolving, the model will need to be updated regularly. To automate this process
+- Collect fresh data and label it regularly.
+- Write a script to train the model and fine-tune the hyperparameters automatically over some daily or weekly interval.
+- Write a script that will evaluate new and previous models on an updated test set and deploy it if it performs better.
+
+If data quality drops because of poor quality signal, the model's performance will also drop. Data quality should be monitored regularly. Some things to check for is data corruption, missing features, if the standard deviation drifts too far from the training set, or a categorical feature starts containing new categories.
+
+Ensure backups are made of every model version so that it can be rolled back to a previous version if necessary. Additionally, keep backups of every dataset that can be rolled back to if necessary. This also allows any model to be evaluated against a previous dataset version.
+
+Another method to evaluate a model's performance is to create a subset of the test set that can check how well the model performs on specific parts of the data which can give a deeper understanding of the model's strengths and weaknesses.
