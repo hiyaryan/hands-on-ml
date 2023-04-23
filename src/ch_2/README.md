@@ -1,14 +1,18 @@
 # Chapter 2
 ## End-to-End Machine Learning Project
+This chapter guides you through a typical [linear regression](https://en.wikipedia.org/wiki/Linear_regression) machine learning project end-to-end.
+
+Jump to project description [here](#machine-learning-housing-corporation-project) with accompanying notebook [here](https://github.com/hiyaryan/hands-on-ml/blob/main/src/ch_2/Housing.ipynb).
 
 ### General Steps to Build a Machine Learning Project
-1. [Frame the problem and look at the big picture.](#1-frame-the-problem-and-look-at-the-big-picture)
-2. [Get the data.](#2-get-the-data)
-3. [Discover and visualize the data to gain insights.](#3-discover-and-visualize-the-data-to-gain-insights)
-4. [Prepare the data to better expose the underlying data patterns to Machine Learning algorithms.](#4-prepare-the-data-to-better-expose-the-underlying-data-patterns-to-machine-learning-algorithms)
-5. [Explore many different models and shortlist the best ones.](#5-explore-many-different-models-and-short-list-the-best-ones)
-6. [Fine-tune your models and combine them into a great solution.](#6-fine-tune-your-models-and-combine-them-into-a-great-solution)
-7. [Launch, monitor, and maintain your system.](#7-launch-monitor-and-maintain-your-system)
+1. [Frame the problem and look at the big picture.](https://en.wikipedia.org/wiki/Problem_statement)
+2. [Get the data.](https://en.wikipedia.org/wiki/Data)
+3. [Discover and visualize the data to gain insights.](https://en.wikipedia.org/wiki/Data_visualization)
+4. [Prepare the data to better expose the underlying data patterns to Machine Learning algorithms.](https://en.wikipedia.org/wiki/Data_preparation)
+5. [Explore many different models and shortlist the best ones.](https://en.wikipedia.org/wiki/Model_selection)
+6. [Fine-tune your models and combine them into a great solution.](https://en.wikipedia.org/wiki/Hyperparameter_optimization)
+7. [Launch, monitor, and maintain your system.](https://en.wikipedia.org/wiki/MLOps)
+---
 
 ### Where to Get Real Data
 - [UC Irvine Machine Learning Repository](http://archive.ics.uci.edu/ml/)
@@ -20,8 +24,70 @@
 - [Wikipedia's List of Machine Learning datasets](https://en.wikipedia.org/wiki/List_of_datasets_for_machine-learning_research)
 - [Quora.com](https://www.quora.com/Where-can-I-find-large-datasets-open-to-the-public)
 - [The datasets subreddit](https://www.reddit.com/r/datasets)
+---
+### Packages Used in this Project
+- [NumPy](http://www.numpy.org/)
+- [Pandas](https://pandas.pydata.org/)
+- [Matplotlib](https://matplotlib.org/)
+- [Scikit-Learn](https://scikit-learn.org/stable/)
+- [scipy](https://www.scipy.org/)
 
-### Machine Learning Housing Corporation Project
+#### **Pandas Imports**
+- [scatter_matrix](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.plotting.scatter_matrix.html) - Plots every numerical attribute against every other numerical attribute.
+
+#### **scipy Imports**
+- [stats](https://docs.scipy.org/doc/scipy/reference/stats.html) - Contains a large number of probability distributions as well as a growing library of statistical functions.
+  - [randint](https://docs.scipy.org/doc/numpy-1.15.0/reference/generated/numpy.random.randint.html) - Return random integers from `low` (inclusive) to `high` (exclusive).
+
+#### **Scikit-Learn Imports**
+##### *Data Preparation and Preprocessing*
+- [impute](https://scikit-learn.org/stable/modules/classes.html#module-sklearn.impute) - for imputing missing values
+  - [SimpleImputer](https://scikit-learn.org/stable/modules/generated/sklearn.impute.SimpleImputer.html) - for imputing missing values using the median or the most frequent value in a column (also known as the [imputation](https://en.wikipedia.org/wiki/Imputation_(statistics)) strategy)
+- [preprocessing](https://scikit-learn.org/stable/modules/classes.html#module-sklearn.preprocessing) - for preprocessing data (e.g., feature scaling) making it more suitable for Machine Learning algorithms
+  - [OrdinalEncoder](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OrdinalEncoder.html) - for encoding categorical variables [ordinal](https://en.wikipedia.org/wiki/Ordinal_data) values
+  - [OneHotEncoder](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OneHotEncoder.html) - for encoding categorical variables [one-hot](https://en.wikipedia.org/wiki/One-hot) values
+  - [StandardScaler](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html) - for scaling numerical variables to have a mean of 0 and a standard deviation of 1 (also known as [standardization](https://en.wikipedia.org/wiki/Standard_score))
+- [base](https://scikit-learn.org/stable/modules/classes.html#module-sklearn.base) - for creating custom transformers and estimators
+  - [BaseEstimator](https://scikit-learn.org/stable/modules/generated/sklearn.base.BaseEstimator.html) - for creating custom [estimators](https://en.wikipedia.org/wiki/Estimator)
+  - [TransformerMixin](https://scikit-learn.org/stable/modules/generated/sklearn.base.TransformerMixin.html) - for creating custom transformers (i.e., classes that can be used as part of a [Pipeline](https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html))
+- [compose](https://scikit-learn.org/stable/modules/classes.html#module-sklearn.compose) - for creating a composition of transformers
+  - [ColumnTransformer](https://scikit-learn.org/stable/modules/generated/sklearn.compose.ColumnTransformer.html) - for creating custom transformers that work on multiple columns at once
+- [pipeline](https://scikit-learn.org/stable/modules/classes.html#module-sklearn.pipeline) - for creating pipelines
+  - [Pipeline](https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html) - for creating [pipelines](https://en.wikipedia.org/wiki/Pipeline_(software)) (i.e., sequences of transformations)
+- [model_selection](https://scikit-learn.org/stable/modules/classes.html#module-sklearn.model_selection) - for splitting data into training and test sets
+  - [StratifiedShuffleSplit](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.StratifiedShuffleSplit.html) - for splitting data into training and test sets using [stratified sampling](https://en.wikipedia.org/wiki/Stratified_sampling)
+
+##### *ML Algorithms and Metrics*
+- [linear_model](https://scikit-learn.org/stable/modules/classes.html#module-sklearn.linear_model) - for creating linear regression models
+  - [LinearRegression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html) - for creating [linear regression models](https://en.wikipedia.org/wiki/Linear_regression)
+- [tree](https://scikit-learn.org/stable/modules/classes.html#module-sklearn.tree) - for creating [decision tree models](https://en.wikipedia.org/wiki/Decision_tree)
+  - [DecisionTreeRegressor](https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeRegressor.html) - for creating decision tree models for regression tasks
+- [ensemble](https://scikit-learn.org/stable/modules/classes.html#module-sklearn.ensemble) - for creating [ensemble models](https://en.wikipedia.org/wiki/Ensemble_learning)
+  - [RandomForestRegressor](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html) - for creating [random forest models](https://en.wikipedia.org/wiki/Random_forest) for regression tasks
+- [svm](https://scikit-learn.org/stable/modules/classes.html#module-sklearn.svm) - for creating [support vector machine models](https://en.wikipedia.org/wiki/Support_vector_machine)
+  - [SVR](https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVR.html) - for creating support vector machine models (SVR) for regression problems
+- [neural_network](https://scikit-learn.org/stable/modules/classes.html#module-sklearn.neural_network) - for creating [neural network models](https://en.wikipedia.org/wiki/Artificial_neural_network)
+  - [MLPRegressor](https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPRegressor.html) - for creating [multi-layer perceptron models](https://en.wikipedia.org/wiki/Multilayer_perceptron) for regression problems
+- [model_selection](https://scikit-learn.org/stable/modules/classes.html#module-sklearn.model_selection) - for cross-validation and hyperparameter tuning
+  - [cross_val_score](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_score.html) - for evaluating models using [cross-validation](https://en.wikipedia.org/wiki/Cross-validation_(statistics))
+  - [GridSearchCV](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html) - for evaluating models using [grid search](https://en.wikipedia.org/wiki/Hyperparameter_optimization#Grid_search)
+  - [RandomizedSearchCV](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.RandomizedSearchCV.html) - for evaluating models using [randomized search](https://en.wikipedia.org/wiki/Hyperparameter_optimization#Random_search)
+- [metrics](https://scikit-learn.org/stable/modules/classes.html#module-sklearn.metrics) - for evaluating models
+  - [mean_squared_error](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.mean_squared_error.html) - for evaluating models using [mean squared error](https://en.wikipedia.org/wiki/Mean_squared_error) (MSE)
+
+---
+---
+### **Machine Learning Housing Corporation Project**
+Contents
+1. [Frame the problem and look at the big picture.](#1-frame-the-problem-and-look-at-the-big-picture)
+2. [Get the data.](#2-get-the-data)
+3. [Discover and visualize the data to gain insights.](#3-discover-and-visualize-the-data-to-gain-insights)
+4. [Prepare the data to better expose the underlying data patterns to Machine Learning algorithms.](#4-prepare-the-data-to-better-expose-the-underlying-data-patterns-to-machine-learning-algorithms)
+5. [Explore many different models and shortlist the best ones.](#5-explore-many-different-models-and-short-list-the-best-ones)
+6. [Fine-tune your models and combine them into a great solution.](#6-fine-tune-your-models-and-combine-them-into-a-great-solution)
+7. [Launch, monitor, and maintain your system.](#7-launch-monitor-and-maintain-your-system)
+---
+
 #### **1. Frame the problem and look at the big picture.**
 Contents
 - [1A Look at the Big Picture](#1a-look-at-the-big-picture)
@@ -98,7 +164,7 @@ Verify assumption to catch serious issues early on.
 It is assumed that prices will be fed into the downstream Machine Learning system and used in this numeric form. However, if the prices are converted into categories (e.g. "cheap", "medium", "expensive") then getting prices perfectly is not important. This would change the problem framing from a regression task to a classification task.
 
 In the Housing Corporation Project, assume actual prices are needed.
-
+---
 #### **2. Get the Data**
 Contents
 - [2A Create the Workspace](#2a-create-the-workspace)
@@ -246,7 +312,7 @@ train_set, test_set = train_test_split(housing, test_size=0.2, random_state=42)
 A *sampling bias* can occur if the dataset is not large enough and the test set is selected through random sampling methods. This is because if the right number of instances are not sampled from each stratum (def. strata - a homogenous subgroup of a population), then the test set may not be representative of the overall population. *Stratified sampling* can be used to ensure representative samples are selected.
 
 In the housing dataset, `median_income` is found to be an important attribute to to predict `median_house_value` so the test set should be representative of a stratum of `median_income`. This requires stratified sampling which can be performed through analyzing the `median_income` histogram and determine how many of each instance from each bucket should be included in the test set. The size of the bucket determines the size of each strata in the test set.
-
+---
 #### **3. Discover and visualize the data to gain insights.**
 Contents
 - [3A Visualizing Geographical Data](#3a-visualizing-geographical-data)
@@ -294,7 +360,7 @@ By adding these combinations to the dataset, the correlation matrix can be compu
 Through experimentation, it was found that the `rooms_per_household` attribute is more correlated with the `median_house_value` than the `total_rooms` attribute.
 
 This step is iterative and can be returned to after the model is trained to see if the model performs better with the new attributes that may be discovered with more experimentation.
-
+---
 #### **4. Prepare the data to better expose the underlying data patterns to Machine Learning algorithms.**
 Contents
 - [4A Data Cleaning](#4a-data-cleaning)
@@ -370,7 +436,7 @@ The `Pipeline` constructor takes a list of name/estimator pairs defining a seque
 `ColumnTransformer` can be used to apply different transformations to different columns. This is useful for the housing dataset because the numerical attributes need to be scaled while the categorical attributes need to be converted to one-hot vectors.
 
 If there is a mixture of sparse and dense features, the `ColumnTransformer` estimates the density of the final matrix (i.e. the ratio of nonzero cells), and it returns a sparse matrix if the density is lower than a given threshold (by default, `sparse_threshold=0.3`). 
-
+---
 #### **5. Explore many different models and short-list the best ones.**
 Contents
 - [5A Training and Evaluating on the Training Set](#5a-training-and-evaluating-on-the-training-set)
@@ -407,7 +473,7 @@ Another model to try is the Support Vector Machine (SVM) model. This model is pa
 Finally try a neural network model. This model is capable of learning complex nonlinear relationships in the data. However, it is very slow to train and it requires a lot of data to perform well.
 
 Use Python's `pickle` module to save the trained models. This is useful for when you want to come back to a project later and pick up where you left off.
-
+---
 #### **6. Fine-tune your models and combine them into a great solution.**
 Contents
 - [6A Grid Search](#6a-grid-search)
@@ -448,7 +514,7 @@ Ensure the test set is transformed using `transform()` and not `fit_transform()`
 To get an idea of how precise the model's generalization error is, compute the 95% confidence interval for the generalization error using `scipy.stats.t.interval()`.
 
 After evaluating the final model, resist any more fine-tuning which likely won't improve the model's performance on new data. Instead, collect more data and try different models or prepare to launch, monitor, and maintain the system.
-
+---
 #### **7. Launch, monitor, and maintain your system.**
 To deploy the model to production, export the model using `joblib` and write production code to load the model and make predictions using the `predict()` method.
 
