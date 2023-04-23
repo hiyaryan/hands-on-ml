@@ -32,10 +32,14 @@ Contents
   - [cross_val_predict](http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_predict.html) - Generate cross-validated estimates for each input data point.
 - [base](http://scikit-learn.org/stable/modules/classes.html#module-sklearn.base) - base classes and utility functions
   - [clone](http://scikit-learn.org/stable/modules/generated/sklearn.base.clone.html) - Constructs a new estimator with the same parameters (deep copy).
+- [StandardScaler](http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html) - Standardize features by removing the mean and scaling to unit variance.
 
 ##### Models
 - [SGDClassifier](http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.SGDClassifier.html) - Linear classifiers (SVM, logistic regression, a.o.) with SGD training.
 - [RandomForestClassifier](http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html) - A random forest classifier.
+- [SVC](http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html) - C-Support Vector Classification (SVC).
+- [OneVsOneClassifier](http://scikit-learn.org/stable/modules/generated/sklearn.multiclass.OneVsOneClassifier.html) - One-vs-one multiclass strategy.
+- [OneVsRestClassifier](http://scikit-learn.org/stable/modules/generated/sklearn.multiclass.OneVsRestClassifier.html) - One-vs-the-rest (OvR) multiclass/multilabel strategy.
 - [metrics](https://scikit-learn.org/stable/modules/classes.html#module-sklearn.metrics) - for evaluating models
   - [confusion_matrix](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html) - Compute confusion matrix to evaluate the accuracy of a classification.
   - [precision_score](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.precision_score.html) - Compute the precision (positive predictive value) metric.
@@ -166,3 +170,31 @@ The ROC curve is a useful tool to compare classifiers. These comparisons can be 
 ##### def. area under the curve (AUC) - a measure of the performance of a binary classifier
 
 ### Multiclass Classification
+Multiclass classification algorithms are classifiers (also called multinomial classifiers) that can distinguish between more than two classes.
+
+Algorithms capable of handling multiclass classification natively:
+- Stochastic Gradient Descent (SGD) - classifies by assigning each class a weight vector and using the score of the class with the highest weight vector as the prediction
+- Random Forest - classifies by averaging the predictions of each decision tree in the forest
+- Naive Bayes - classifies by estimating the probability that an instance belongs to each class and predicting the class with the highest probability
+
+Strictly binary classifiers:
+- Logistic Regression
+- Support Vector Machine (SVM)
+
+Certain strategies can be used to perform multiclass classification using strictly binary classifiers.
+
+One method to classify all 10 digits in the MNIST dataset is to train 10 binary classifiers, one for each digit. This would result in 10 binary classifiers for each digit (0-detector, 1-detector, etc.).
+
+##### def. one-versus-all (OvA) or one-versus-the-rest (OvR) - a strategy to classify multiclass classification problems using strictly binary classifiers
+
+##### def. one-versus-one (OvO) - a strategy to classify multiclass classification problems by training a binary classifier for every pair of digits
+
+For a OvO strategy, if there are N classes, train N x (N - 1) / 2 classifiers. For the MNIST dataset, this would result in 45 binary classifiers. The advantage of OvO is that each classifier only needs to be trained on the part of the training set for the two classes that it must distinguish.
+
+For algorithms that scale poorly with the size of the training set, OvO is preferred because it is faster to train many classifiers on small training sets than to train few classifiers on large training sets.
+
+For algorithms that scale well with the size of the training set, OvR is preferred because it is faster to train a few classifiers on large training sets than to train many classifiers on small training sets.
+
+SciKit-Learn can detect when a binary classification algorithm is used for multiclass classification and automatically run OvR or OvO depending on the algorithm.
+
+To force SciKit-Learn to use a specific strategy, use the `OneVsOneClassifier` or `OneVsRestClassifier` classes and pass a binary classifier to their constructor.
