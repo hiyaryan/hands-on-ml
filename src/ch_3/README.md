@@ -35,6 +35,7 @@ Contents
 
 ##### Models
 - [SGDClassifier](http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.SGDClassifier.html) - Linear classifiers (SVM, logistic regression, a.o.) with SGD training.
+- [RandomForestClassifier](http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html) - A random forest classifier.
 - [metrics](https://scikit-learn.org/stable/modules/classes.html#module-sklearn.metrics) - for evaluating models
   - [confusion_matrix](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html) - Compute confusion matrix to evaluate the accuracy of a classification.
   - [precision_score](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.precision_score.html) - Compute the precision (positive predictive value) metric.
@@ -42,6 +43,7 @@ Contents
   - [f1_score](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html) - Compute the F1 score, also known as balanced F-score or F-measure.
   - [precision_recall_curve](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.precision_recall_curve.html) - Compute precision-recall pairs for different probability thresholds.
   - [roc_curve](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.roc_curve.html) - Compute Receiver operating characteristic (ROC).
+  - [roc_auc_score](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.roc_auc_score.html) - Compute Area Under the Receiver Operating Characteristic Curve (ROC AUC) from prediction scores.
 
 ---
 ---
