@@ -12,8 +12,8 @@ Jump to project description [here](#machine-learning-housing-corporation-project
 5. [Explore many different models and shortlist the best ones.](https://en.wikipedia.org/wiki/Model_selection)
 6. [Fine-tune your models and combine them into a great solution.](https://en.wikipedia.org/wiki/Hyperparameter_optimization)
 7. [Launch, monitor, and maintain your system.](https://en.wikipedia.org/wiki/MLOps)
----
 
+---
 ### Where to Get Real Data
 - [UC Irvine Machine Learning Repository](http://archive.ics.uci.edu/ml/)
 - [Kaggle datasets](https://www.kaggle.com/datasets)
@@ -24,6 +24,7 @@ Jump to project description [here](#machine-learning-housing-corporation-project
 - [Wikipedia's List of Machine Learning datasets](https://en.wikipedia.org/wiki/List_of_datasets_for_machine-learning_research)
 - [Quora.com](https://www.quora.com/Where-can-I-find-large-datasets-open-to-the-public)
 - [The datasets subreddit](https://www.reddit.com/r/datasets)
+
 ---
 ### Packages Used in this Project
 - [NumPy](http://www.numpy.org/)
@@ -86,8 +87,8 @@ Contents
 5. [Explore many different models and shortlist the best ones.](#5-explore-many-different-models-and-short-list-the-best-ones)
 6. [Fine-tune your models and combine them into a great solution.](#6-fine-tune-your-models-and-combine-them-into-a-great-solution)
 7. [Launch, monitor, and maintain your system.](#7-launch-monitor-and-maintain-your-system)
----
 
+---
 #### **1. Frame the problem and look at the big picture.**
 Contents
 - [1A Look at the Big Picture](#1a-look-at-the-big-picture)
@@ -164,6 +165,7 @@ Verify assumption to catch serious issues early on.
 It is assumed that prices will be fed into the downstream Machine Learning system and used in this numeric form. However, if the prices are converted into categories (e.g. "cheap", "medium", "expensive") then getting prices perfectly is not important. This would change the problem framing from a regression task to a classification task.
 
 In the Housing Corporation Project, assume actual prices are needed.
+
 ---
 #### **2. Get the Data**
 Contents
@@ -312,6 +314,7 @@ train_set, test_set = train_test_split(housing, test_size=0.2, random_state=42)
 A *sampling bias* can occur if the dataset is not large enough and the test set is selected through random sampling methods. This is because if the right number of instances are not sampled from each stratum (def. strata - a homogenous subgroup of a population), then the test set may not be representative of the overall population. *Stratified sampling* can be used to ensure representative samples are selected.
 
 In the housing dataset, `median_income` is found to be an important attribute to to predict `median_house_value` so the test set should be representative of a stratum of `median_income`. This requires stratified sampling which can be performed through analyzing the `median_income` histogram and determine how many of each instance from each bucket should be included in the test set. The size of the bucket determines the size of each strata in the test set.
+
 ---
 #### **3. Discover and visualize the data to gain insights.**
 Contents
@@ -360,6 +363,7 @@ By adding these combinations to the dataset, the correlation matrix can be compu
 Through experimentation, it was found that the `rooms_per_household` attribute is more correlated with the `median_house_value` than the `total_rooms` attribute.
 
 This step is iterative and can be returned to after the model is trained to see if the model performs better with the new attributes that may be discovered with more experimentation.
+
 ---
 #### **4. Prepare the data to better expose the underlying data patterns to Machine Learning algorithms.**
 Contents
@@ -436,6 +440,7 @@ The `Pipeline` constructor takes a list of name/estimator pairs defining a seque
 `ColumnTransformer` can be used to apply different transformations to different columns. This is useful for the housing dataset because the numerical attributes need to be scaled while the categorical attributes need to be converted to one-hot vectors.
 
 If there is a mixture of sparse and dense features, the `ColumnTransformer` estimates the density of the final matrix (i.e. the ratio of nonzero cells), and it returns a sparse matrix if the density is lower than a given threshold (by default, `sparse_threshold=0.3`). 
+
 ---
 #### **5. Explore many different models and short-list the best ones.**
 Contents
@@ -473,6 +478,7 @@ Another model to try is the Support Vector Machine (SVM) model. This model is pa
 Finally try a neural network model. This model is capable of learning complex nonlinear relationships in the data. However, it is very slow to train and it requires a lot of data to perform well.
 
 Use Python's `pickle` module to save the trained models. This is useful for when you want to come back to a project later and pick up where you left off.
+
 ---
 #### **6. Fine-tune your models and combine them into a great solution.**
 Contents
@@ -514,6 +520,7 @@ Ensure the test set is transformed using `transform()` and not `fit_transform()`
 To get an idea of how precise the model's generalization error is, compute the 95% confidence interval for the generalization error using `scipy.stats.t.interval()`.
 
 After evaluating the final model, resist any more fine-tuning which likely won't improve the model's performance on new data. Instead, collect more data and try different models or prepare to launch, monitor, and maintain the system.
+
 ---
 #### **7. Launch, monitor, and maintain your system.**
 To deploy the model to production, export the model using `joblib` and write production code to load the model and make predictions using the `predict()` method.
