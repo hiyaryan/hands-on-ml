@@ -198,3 +198,16 @@ For algorithms that scale well with the size of the training set, OvR is preferr
 SciKit-Learn can detect when a binary classification algorithm is used for multiclass classification and automatically run OvR or OvO depending on the algorithm.
 
 To force SciKit-Learn to use a specific strategy, use the `OneVsOneClassifier` or `OneVsRestClassifier` classes and pass a binary classifier to their constructor.
+
+### Error Analysis
+To analyze errors of a promising classification model start by looking at the confusion matrix. The `matshow()` function from Matplotlib can give a visual representation of the confusion matrix.
+
+If most images are on the main diagonal, the model classified them correctly. If there are darker squares on the main diagonal then, these squares could mean there were fewer images of that class in the dataset or the classifier does not perform well on those classes.
+
+For he MNIST dataset, the classifier can be improve by reducing false 8s. This cn be be done by training the classifier with more images of 8s, engineering new features that would help the classifier, or preprocessing the images to make some patterns stand out more.
+
+Use Matploblib's `imshow()` to analyze individual errors that can help you gain insight into what the classifier is doing and why it is failing which will help you choose the ways to improve the classifier.
+
+The classifier gets confused between 3s and 5s. Some of these are due to the way the digits are poorly written, but others are due to the classifier being too simple. SGD is a linear model that assigns a weight per class to each pixel. When the SDG model sees a new image, it sums up the weighted pixel intensities to get a score for each class. 3s and 5s differ only by a few pixels, so the model easily confuses them. This classifier is sensitive to image shifting and rotation, so preprocessing the images to ensure they are well centered and not too rotated will help reduce the number of false 3s and 5s.
+
+### Multilabel Classification
