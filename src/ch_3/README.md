@@ -211,3 +211,15 @@ Use Matploblib's `imshow()` to analyze individual errors that can help you gain 
 The classifier gets confused between 3s and 5s. Some of these are due to the way the digits are poorly written, but others are due to the classifier being too simple. SGD is a linear model that assigns a weight per class to each pixel. When the SDG model sees a new image, it sums up the weighted pixel intensities to get a score for each class. 3s and 5s differ only by a few pixels, so the model easily confuses them. This classifier is sensitive to image shifting and rotation, so preprocessing the images to ensure they are well centered and not too rotated will help reduce the number of false 3s and 5s.
 
 ### Multilabel Classification
+Multilabel classification is when a classifier outputs multiple binary tags. For example, a face recognition classifier might output multiple people in the same picture.
+
+One approach to selecting a multilabel classifier is to measure the F1 score for each individual label and then compute the average score.
+
+Not all labels are equally important so more weight can be given to some labels to improve the classifier. This can be done by giving each label a weight equal to its support by setting `average="weighted"` in the `f1_score()` function.
+
+##### def. support - the number of instances with that target label
+
+### Multioutput Classification
+Multioutput classification is a generalization of multilabel classification where each label can be multiclass (i.e. it can have more than two possible values).
+
+A system that takes an image as input and outputs a digit image represented as an array of pixel intensities is an example of a multioutput classification system.
